@@ -1,0 +1,95 @@
+Sub StockVolume():
+
+  ' Variable for holding ticker symbol
+  Dim Ticker As String
+
+  ' Variable for volume totals
+  Dim Volume_Total As Double
+  Volume_Total = 0
+  
+  'Variable for worksheet
+  Dim ws As Worksheet
+
+  
+  
+  'Variable for the last row of each worksheet
+  Dim LastRow As Long
+  
+
+
+  ' Loop through all worksheets
+  For Each ws In Worksheets
+  
+  ' Track location for each ticker symbol in the summary table
+  Dim Summary_Table_Row As Double
+  Summary_Table_Row = 2
+  
+  Dim YearlyChange As Double
+  
+    'Determine the last row
+    LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+    
+    'Locate and label summary table
+    ws.Range("I1").Value = "Ticker Symbol"
+    ws.Range("J1").Value = "Volume Total"
+    
+    
+    
+  
+    'Loop through ticker column of each worksheet
+    For i = 2 To LastRow
+
+    ' Check if we are still within the same ticker symbol
+    If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+
+      ' Set the Ticker symbol
+      Ticker = ws.Cells(i, 1).Value
+      
+      ' Print the Ticker symbol in the Summary Table
+      ws.Range("I" & Summary_Table_Row).Value = Ticker
+
+      ' Print the Volume Amount to the Summary Table
+      ws.Range("J" & Summary_Table_Row).Value = Volume_Total
+
+      ' Add one to the summary table row
+      Summary_Table_Row = Summary_Table_Row + 1
+      
+    
+
+      ' Add to the Volume Total
+      Volume_Total = Volume_Total + ws.Cells(i, 7).Value
+
+      
+      
+      ' Reset the Volume Total
+      Volume_Total = 0
+
+    ' if the next ticker does not change, do this...
+    Else
+
+      ' Add to the Volume Total
+      Volume_Total = Volume_Total + ws.Cells(i, 7).Value
+      'subtract startprice from endprice of each ticker to find diff
+      
+        
+        
+        
+        
+    End If
+    
+    Next i
+
+  Next ws
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
